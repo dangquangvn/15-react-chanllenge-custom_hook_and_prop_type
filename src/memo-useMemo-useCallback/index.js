@@ -7,11 +7,48 @@ import { useFetch } from "../hooks/useFetch";
 const url = "https://course-api.com/javascript-store-products";
 
 // every time props or state changes, component re-renders
+const calculateMostExpensive = (data) => {
+  console.log("hello");
+  return (
+    data.reduce((acc, item) => {
+      const price = item.fields.price;
+      console.log("price", price);
+      if (price >= acc) {
+        acc = price;
+      }
+      return acc;
+    }, 0) / 100
+  );
+  // console.log(test);
+};
 
 const Index = () => {
   const { data: products } = useFetch(url);
   const [count, setCount] = useState(0);
   const [cart, setCart] = useState(0);
+
+  //useMemo
+  const mostExpensiveMemo = useMemo(() => calculateMostExpensive(products), [
+    products
+  ]);
+
+  // const calculateMostExpensive = useCallback(
+  //   (data) => {
+  //     console.log("hello");
+  //     return (
+  //       data.reduce((acc, item) => {
+  //         const price = item.fields.price;
+  //         console.log("price", price);
+  //         if (price >= acc) {
+  //           acc = price;
+  //         }
+  //         return acc;
+  //       }, 0) / 100
+  //     );
+  //     // console.log(test);
+  //   },
+  //   [products ]
+  // );
 
   const addToCart = useCallback(() => {
     console.log("addToCart called");
@@ -25,6 +62,8 @@ const Index = () => {
         click me
       </button>
       <h1>Cart : {cart}</h1>
+      {/* <h1>Most Expensive: ${calculateMostExpensive(products)}</h1> */}
+      <h1>Most Expensive: ${mostExpensiveMemo}</h1>
       <BigList products={products} addToCart={addToCart} />
     </>
   );

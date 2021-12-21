@@ -1,6 +1,11 @@
 import React from "react";
 //react router
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useParams
+} from "react-router-dom";
 // pages
 import Home from "./Home";
 import About from "./About";
@@ -13,6 +18,7 @@ import Navbar from "./Navbar";
 const ReactRouterSetup = () => {
   return (
     <Router>
+      <Navbar />
       <Switch>
         <Route exact path="/">
           <Home />
@@ -23,6 +29,7 @@ const ReactRouterSetup = () => {
         <Route path="/people">
           <People />
         </Route>
+        <Route path="/person/:id" children={<Person />}></Route>
         <Route path="*">
           <Error />
         </Route>
